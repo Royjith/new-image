@@ -95,41 +95,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy to Kubernetes') {
-            steps {
-                input message: 'Approve Kubernetes Deployment?', ok: 'Deploy'  // Manual approval before deployment
-                script {
-                    echo 'Deploying Docker image to Kubernetes...'
-
-                    try {
-                        // Set the kubeconfig file (for accessing the Kubernetes cluster)
-                        withCredentials([file(credentialsId: 'pikube', variable: 'KUBECONFIG_FILE')]) {
-                            // Define the path to your deployment.yaml file in the repository
-                            def deploymentFile = 'deployment.yaml'  // Adjust path if necessary
-
-                            // Verify if the deployment.yaml exists in the workspace
-                            sh "ls -al ${deploymentFile}"
-
-                            // Update the Docker image in the deployment.yaml with the newly pushed image tag
-                            echo "Updating Docker image in the deployment.yaml to ${DOCKER_HUB_REPO}:${DOCKER_TAG}"
-                            sh """
-                                sed -i 's|image: .*|image: ${DOCKER_HUB_REPO}:${DOCKER_TAG}|g' ${deploymentFile}
-                            """
-
-                            // Apply the updated deployment.yaml using kubectl
-                            echo 'Applying the updated deployment.yaml to the Kubernetes cluster...'
-                            sh """
-                                export KUBECONFIG=$KUBECONFIG_FILE
-                                kubectl apply -f ${deploymentFile} --namespace=${NAMESPACE}
-                            """
-                        }
-                    } catch (Exception e) {
-                        error "Kubernetes deployment failed: ${e.message}"  // Explicitly fail if Kubernetes deployment fails             
-                    }
-                }
-            }
-        }
     }
 
     post {
