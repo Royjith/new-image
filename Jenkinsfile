@@ -36,12 +36,12 @@ pipeline {
 
                         // Build the Docker image and tag it as "latest"
                         echo "Building the Docker image from Dockerfile..."
-                        sh "docker build -f Dockerfile --no-cache -t ${DOCKER_HUB_REPO}:latest ."
+                        sh "docker build -f Dockerfile --no-cache -t ${DOCKER_HUB_REPO}:version-1 ."
 
                         // Tag the image with the appropriate repository and tag
                         echo "Tagging the Docker image with tag: ${DOCKER_HUB_REPO}:${tag}..."
                         sh """
-                            IMAGE_ID=\$(docker images -q ${DOCKER_HUB_REPO}:latest)
+                            IMAGE_ID=\$(docker images -q ${DOCKER_HUB_REPO}:version-1)
                             docker tag \$IMAGE_ID ${DOCKER_HUB_REPO}:${tag}
                         """
 
