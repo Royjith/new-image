@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'my-app'               // Docker image name
         DOCKER_TAG = 'version-1'              // Static Docker tag set to 'version-1'
-        DOCKER_HUB_REPO = 'royjith/pikube'    // Docker Hub repository
+        DOCKER_HUB_REPO = 'royjith/docker'    // Docker Hub repository
         DOCKER_HUB_CREDENTIALS_ID = 'dockerhub' // Docker Hub credentials ID
     }
 
