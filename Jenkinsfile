@@ -16,7 +16,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out code from Git...'
-                git branch: 'main', credentialsId: 'dockerhub', url: 'https://github.com/Royjith/docker.git'
+                git branch: 'main', url: 'https://github.com/Royjith/new-image.git'
             }
         }
 
